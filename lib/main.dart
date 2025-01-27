@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'mock_data.dart';
 import 'dart:math';
@@ -20,6 +23,12 @@ void main() async {
 
   // NOTE: The location of the data stored by our Hive box will depend on which device is used, the
   // location is also determined by the following standard plugin: https://pub.dev/packages/path_provider
+  try {
+    Directory dataDir = await getApplicationDocumentsDirectory();
+    debugPrint('View `hive` and `shared_preferences` under $dataDir');
+  } on MissingPluginException {
+    debugPrint('`getApplicationDocumentsDirectory` not supported on this platform');
+  }
 
   // Start running our Flutter application
   runApp(const MyApp());
